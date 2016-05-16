@@ -1,0 +1,10 @@
+/node_modules
+/src/node_modules
+
+src/typings
+/dev
+/typings
+/app/app.component.js.map
+/app/main.js
+/app/main.js.map
+/app/app.component.js
