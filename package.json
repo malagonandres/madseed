@@ -1,37 +1,29 @@
 {
-  "name": "angular2-quickstart",
+  "name": "bp-gulp-angular2",
   "version": "1.0.0",
-  "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "lite": "lite-server",
-    "postinstall": "typings install",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
-    "typings": "typings"
-  },
-  "license": "ISC",
-  "dependencies": {
-    "@angular/common":  "2.0.0-rc.1",
-    "@angular/compiler":  "2.0.0-rc.1",
-    "@angular/core":  "2.0.0-rc.1",
-    "@angular/http":  "2.0.0-rc.1",
-    "@angular/platform-browser":  "2.0.0-rc.1",
-    "@angular/platform-browser-dynamic":  "2.0.0-rc.1",
-    "@angular/router":  "2.0.0-rc.1",
-    "@angular/router-deprecated":  "2.0.0-rc.1",
-    "@angular/upgrade":  "2.0.0-rc.1",
-    "systemjs": "0.19.27",
-    "es6-shim": "^0.35.0",
-    "reflect-metadata": "^0.1.3",
-    "rxjs": "5.0.0-beta.6",
-    "zone.js": "^0.6.12",
-    "angular2-in-memory-web-api": "0.0.7",
-    "bootstrap": "^3.3.6"
-  },
+  "description": "## Description This repository acts as a very simple Angular 2 Beta Boilerplate with which you can get started developing Angular 2 immediately. It is derived from the official Angular 2 Documentation which can be found [here](https://angular.io/docs/ts/latest/quickstart.html). ## Usage Follow the following steps and you're good to go! Important: Typescript and npm has to be installed on your machine!",
+  "main": "gulpfile.js",
+  "dependencies": {},
   "devDependencies": {
-    "concurrently": "^2.0.0",
-    "lite-server": "^2.2.0",
-    "typescript": "^1.8.10",
-    "typings":"^0.8.1"
-  }
+    "autoprefixer": "^6.3.6",
+    "browser-sync": "^2.12.5",
+    "csswring": "^4.2.3",
+    "gulp": "^3.9.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-postcss": "^6.1.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-stylus": "^2.3.1",
+    "gulp-typescript": "^2.13.0",
+    "gulp-uglify": "^1.5.3",
+    "lost": "^6.7.2",
+    "nib": "^1.1.0",
+    "rupture": "^0.6.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": " cd src && npm install "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
