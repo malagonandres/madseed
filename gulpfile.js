@@ -42,12 +42,12 @@ var tsProject = typescript.createProject(source + 'tsconfig.json');
 //**********************************************//
 
 gulp.task('styles', function () {
-    gulp.src(source + 'styles/**/*.styl', { sourcemaps: true })
+    gulp.src(source + 'styles/**/*.styl')
         .pipe(plumber())
-        // .pipe(sourcemaps.init())
+        .pipe(sourcemaps.init())
         .pipe(stylus(stylus_options))
         .pipe(postcss(processors))
-        // .pipe(sourcemaps.write())
+        .pipe(sourcemaps.write('.', { sourceRoot: develop + 'css' }))
         .pipe(gulp.dest(develop + 'css'))
         .pipe(browserSync.stream());
 });
@@ -57,11 +57,11 @@ gulp.task('styles', function () {
 //**********************************************//
 
 gulp.task('scripts', function () {
-    return gulp.src(source + 'app/**/*.ts', { sourcemaps: true })
+    return gulp.src(source + 'app/**/*.ts')
         .pipe(plumber())
-        // .pipe(sourcemaps.init())
+        .pipe(sourcemaps.init())
         .pipe(typescript(tsProject))
-        // .pipe(sourcemaps.write())
+        .pipe(sourcemaps.write('.', { sourceRoot: develop + 'js' }))
         .pipe(gulp.dest(develop + 'js'))
         .pipe(browserSync.stream());
 });
