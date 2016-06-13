@@ -1,16 +1,18 @@
-var gulp            = require('gulp');          //http://gulpjs.com/
-var uglify          = require('gulp-uglify');   //https://www.npmjs.com/package/gulp-uglify
-var plumber         = require('gulp-plumber');  //https://www.npmjs.com/package/gulp-plumber
-var csswring        = require('csswring');      //https://github.com/ben-eb/cssnano
-var postcss         = require('gulp-postcss');  //https://github.com/postcss/postcss
-var stylus          = require('gulp-stylus');   //http://stylus-lang.com/
-var autoprefixer    = require('autoprefixer');  //https://github.com/postcss/autoprefixer
-var lost            = require('lost');          //https://github.com/peterramsing/lost
-var nib             = require('nib');           //http://tj.github.io/nib/
-var rupture         = require('rupture');       //https://github.com/jenius/rupture
-var browserSync     = require('browser-sync').create(); //https://www.browsersync.io
-var typescript      = require('gulp-typescript');//http://www.typescriptlang.org/
+var gulp            = require('gulp');                          //http://gulpjs.com/
+var uglify          = require('gulp-uglify');                   //https://www.npmjs.com/package/gulp-uglify
+var plumber         = require('gulp-plumber');                  //https://www.npmjs.com/package/gulp-plumber
+var csswring        = require('csswring');                      //https://github.com/ben-eb/cssnano
+var postcss         = require('gulp-postcss');                  //https://github.com/postcss/postcss
+var stylus          = require('gulp-stylus');                   //http://stylus-lang.com/
+var autoprefixer    = require('autoprefixer');                  //https://github.com/postcss/autoprefixer
+var lost            = require('lost');                          //https://github.com/peterramsing/lost
+var nib             = require('nib');                           //http://tj.github.io/nib/
+var rupture         = require('rupture');                       //https://github.com/jenius/rupture
+var browserSync     = require('browser-sync').create();         //https://www.browsersync.io
+var typescript      = require('gulp-typescript');               //http://www.typescriptlang.org/
 var sourcemaps      = require('gulp-sourcemaps');
+var fallback        = require('connect-history-api-fallback');  //https://github.com/bripkens/connect-history-api-fallback
+
 
 //**********************************************//
 //  INIT VARIABLE
@@ -42,7 +44,7 @@ var tsProject = typescript.createProject(source + 'tsconfig.json');
 //**********************************************//
 
 gulp.task('styles', function () {
-    gulp.src(source + 'styles/**/*.styl')
+    gulp.src(source + 'styles/style.styl')
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(stylus(stylus_options))
@@ -122,7 +124,8 @@ gulp.task('build-sounds',function(){
 gulp.task('browser-sync', function () {
     browserSync.init({
         server:{
-            baseDir: develop
+            baseDir: develop,
+            middleware: [ fallback() ]
         },
         open:true
     });
@@ -133,10 +136,10 @@ gulp.task('browser-sync', function () {
 //**********************************************//
 
 gulp.task('watch', function () {
-    gulp.watch(source + 'app/**/*.ts', ['scripts']);
+    gulp.watch(source + 'app/**/*.ts',      ['scripts']);
     gulp.watch(source + 'styles/**/*.styl', ['styles']);
-    gulp.watch(source + 'index.html', ['build-html']);
-    gulp.watch(source + 'views/**/*.html', ['build-html-views']);
+    gulp.watch(source + 'index.html',       ['build-html']);
+    gulp.watch(source + 'views/**/*.html',  ['build-html-views']);
 });
 
 //**********************************************//

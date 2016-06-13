@@ -1,10 +1,9 @@
+#IGNORE NODE MODULES
 /node_modules
 /src/node_modules
-
+#IGNORE TYPINGS
 src/typings
+#IGNORE DEVELOPER FOLDER
 /dev
-/typings
-/app/app.component.js.map
-/app/main.js
-/app/main.js.map
-/app/app.component.js
+#IGNORE IDEA FOLDER
+/.idea
