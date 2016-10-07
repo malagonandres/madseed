@@ -18,7 +18,8 @@
     "gulp-uglify": "^2.0.0",
     "lost": "^7.1.0",
     "nib": "^1.1.2",
-    "rupture": "^0.6.1"
+    "rupture": "^0.6.1",
+    "typescript": "^2.0.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -62,7 +62,7 @@ gulp.task('scripts', function () {
     return gulp.src(source + 'app/**/*.ts')
         .pipe(plumber())
         .pipe(sourcemaps.init())
-        .pipe(typescript(tsProject))
+        .pipe(tsProject())
         .pipe(sourcemaps.write('.', { sourceRoot: develop + 'js' }))
         .pipe(gulp.dest(develop + 'js'))
         .pipe(browserSync.stream());
