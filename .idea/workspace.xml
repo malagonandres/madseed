@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="261e63c3-79e2-4276-8066-69913f0a02f4" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/main.ts" afterPath="$PROJECT_DIR$/src/app/main.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="bp-gulp-angular2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -46,8 +46,8 @@
       <file leaf-file-name="main.ts" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/app/main.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="72">
+              <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
               <folding>
                 <element signature="e#50#115#0" expanded="true" />
               </folding>
@@ -368,12 +368,12 @@
       <workItem from="1465247700203" duration="606000" />
       <workItem from="1465347008840" duration="176000" />
       <workItem from="1465347194888" duration="3122000" />
-      <workItem from="1465790601449" duration="1409000" />
+      <workItem from="1465790601449" duration="2291000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26104000" />
+    <option name="totallyTimeSpent" value="26986000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1963" y="24" width="1877" height="1056" extended-state="6" />
@@ -650,8 +650,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/app/main.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="72">
+          <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
           <folding>
             <element signature="e#50#115#0" expanded="true" />
           </folding>
