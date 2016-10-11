@@ -1,19 +1,21 @@
-var gulp            = require('gulp');                          //http://gulpjs.com/
-var uglify          = require('gulp-uglify');                   //https://www.npmjs.com/package/gulp-uglify
-var plumber         = require('gulp-plumber');                  //https://www.npmjs.com/package/gulp-plumber
-var csswring        = require('csswring');                      //https://github.com/ben-eb/cssnano
-var postcss         = require('gulp-postcss');                  //https://github.com/postcss/postcss
-var stylus          = require('gulp-stylus');                   //http://stylus-lang.com/
-var autoprefixer    = require('autoprefixer');                  //https://github.com/postcss/autoprefixer
-var lost            = require('lost');                          //https://github.com/peterramsing/lost
-var nib             = require('nib');                           //http://tj.github.io/nib/
-var rupture         = require('rupture');                       //https://github.com/jenius/rupture
-var browserSync     = require('browser-sync').create();         //https://www.browsersync.io
-var typescript      = require('gulp-typescript');               //http://www.typescriptlang.org/
-var sourcemaps      = require('gulp-sourcemaps');
-var fallback        = require('connect-history-api-fallback');  //https://github.com/bripkens/connect-history-api-fallback
-
-
+var gulp                = require('gulp');                          //http://gulpjs.com/
+var uglify              = require('gulp-uglify');                   //https://www.npmjs.com/package/gulp-uglify
+var plumber             = require('gulp-plumber');                  //https://www.npmjs.com/package/gulp-plumber
+var csswring            = require('csswring');                      //https://github.com/ben-eb/cssnano
+var postcss             = require('gulp-postcss');                  //https://github.com/postcss/postcss
+var stylus              = require('gulp-stylus');                   //http://stylus-lang.com/
+var autoprefixer        = require('autoprefixer');                  //https://github.com/postcss/autoprefixer
+var lost                = require('lost');                          //https://github.com/peterramsing/lost
+var nib                 = require('nib');                           //http://tj.github.io/nib/
+var rupture             = require('rupture');                       //https://github.com/jenius/rupture
+var browserSync         = require('browser-sync').create();         //https://www.browsersync.io
+var sourceMaps          = require('gulp-sourcemaps');
+var fallback            = require('connect-history-api-fallback');  //https://github.com/bripkens/connect-history-api-fallback
+var webpack             = require('webpack-stream');
+var replace             = require('gulp-replace');  //https://www.npmjs.com/package/gulp-replace
+var imagemin            = require('gulp-imagemin');
+var htmlmin             = require('gulp-htmlmin');
+var gulpSequence        = require('gulp-sequence');
 //**********************************************//
 //  INIT VARIABLE
 //**********************************************//
@@ -21,35 +23,45 @@ var fallback        = require('connect-history-api-fallback');  //https://github
 //  INIT DIRECTORIES
 var source = 'src/';
 var develop = 'dev/';
+var distribution = 'dist/';
 
-//  INIT POSTCSS PROCESSORS
-var processors = [
-    lost,
-    autoprefixer
-];
-
-//  INIT STYLUS OPTIONS
-var stylus_options = {
-    use : [
-        nib(),
-        rupture()
-    ]
-};
-
-//  INIT TSCONFIG
-var tsProject = typescript.createProject(source + 'tsconfig.json');
 
 //**********************************************//
 //  STYLE TASK
 //**********************************************//
 
-gulp.task('styles', function () {
-    gulp.src(source + 'styles/style.styl')
+gulp.task('style:dist', function () {
+    return gulp.src(source + 'styles/style.styl')
         .pipe(plumber())
-        .pipe(sourcemaps.init())
-        .pipe(stylus(stylus_options))
-        .pipe(postcss(processors))
-        .pipe(sourcemaps.write('.', { sourceRoot: develop + 'css' }))
+        .pipe(stylus({
+            use : [
+                nib(),
+                rupture()
+            ]
+        }))
+        .pipe(postcss([
+            lost,
+            autoprefixer,
+            csswring
+        ]))
+        .pipe(gulp.dest(distribution + 'css'));
+});
+
+gulp.task('style:dev', function () {
+    return gulp.src(source + 'styles/style.styl')
+        .pipe(plumber())
+        .pipe(sourceMaps.init())
+        .pipe(stylus({
+            use : [
+                nib(),
+                rupture()
+            ]
+        }))
+        .pipe(postcss([
+            lost,
+            autoprefixer
+        ]))
+        .pipe(sourceMaps.write('.', { sourceRoot: develop + 'css' }))
         .pipe(gulp.dest(develop + 'css'))
         .pipe(browserSync.stream());
 });
@@ -58,34 +70,49 @@ gulp.task('styles', function () {
 //  SCRIPT TASK
 //**********************************************//
 
-gulp.task('scripts', function () {
-    return gulp.src(source + 'app/**/*.ts')
+gulp.task('webpack:dist', function() {
+    return gulp.src(source + 'app/main.ts')
         .pipe(plumber())
-        .pipe(sourcemaps.init())
-        .pipe(tsProject())
-        .pipe(sourcemaps.write('.', { sourceRoot: develop + 'js' }))
-        .pipe(gulp.dest(develop + 'js'))
+        .pipe(webpack( require('./webpack.config.js') ))
+        .pipe(gulp.dest( distribution + 'js' ));
+});
+
+gulp.task('webpack:dev', function() {
+    return gulp.src(source + 'app/main.ts')
+        .pipe(plumber())
+        .pipe(webpack({
+            output  : { filename : 'app.bundle.js' },
+            module  : { loaders: [{test: /\.ts$/, loader: 'ts'}] },
+            resolve : { extensions : ['','.js','.ts'] }
+        }))
+        .pipe(gulp.dest( develop + 'js'))
         .pipe(browserSync.stream());
 });
 
-gulp.task('scripts-node', function () {
-    return gulp.src(source + 'node_modules/**/*.js')
-        .pipe(gulp.dest(develop + 'node_modules'));
-});
-
-gulp.task('scripts-config', function () {
-    return gulp.src(source + 'systemjs.config.js')
-        .pipe(gulp.dest(develop))
-});
 //**********************************************//
 //  HTML TASK
 //**********************************************//
 
-gulp.task('build-html', function () {
-    return gulp.src(source + 'index.html')
-        .pipe(gulp.dest(develop));
+gulp.task('index:dist', function(){
+    gulp.src([source + 'index.html'])
+        .pipe(replace('<script></script>','<script type="text/javascript" src="js/app.bundle.min.js"></script>'))
+        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(gulp.dest( distribution ));
 });
-gulp.task('build-html-views', function () {
+
+gulp.task('index:dev', function(){
+    gulp.src([source + 'index.html'])
+        .pipe(replace('<script></script>','<script type="text/javascript" src="js/app.bundle.js"></script>'))
+        .pipe(gulp.dest( develop ))
+        .pipe(browserSync.stream());
+});
+
+gulp.task('views:dist', function () {
+    return gulp.src(source + 'views/**/*.html')
+        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(gulp.dest(distribution + 'views'));
+});
+gulp.task('views:dev', function () {
     return gulp.src(source + 'views/**/*.html')
         .pipe(gulp.dest(develop + 'views'));
 });
@@ -94,17 +121,36 @@ gulp.task('build-html-views', function () {
 //  FONTS TASK
 //**********************************************//
 
-gulp.task('build-fonts',function(){
-    return gulp.src(source + 'fonts/**/*.ttf')
+gulp.task('font:dist',function(){
+    return gulp.src(source + 'fonts/**/')
+        .pipe(gulp.dest(distribution + 'fonts'));
+});
+gulp.task('font:dev',function(){
+    return gulp.src(source + 'fonts/**/')
         .pipe(gulp.dest(develop + 'fonts'));
+});
+
+gulp.task('favicon:dist',function(){
+    return gulp.src(source + 'favicon.ico')
+        .pipe(gulp.dest(distribution));
+});
+gulp.task('favicon:dev',function(){
+    return gulp.src(source + 'favicon.ico')
+        .pipe(gulp.dest(develop));
 });
 
 //**********************************************//
 //  IMAGES TASK
 //**********************************************//
 
-gulp.task('build-img',function(){
+gulp.task('img:dist',function(){
     return gulp.src(source + 'img/**/')
+        .pipe(imagemin())
+        .pipe(gulp.dest(distribution + 'img'));
+});
+gulp.task('img:dev',function(){
+    return gulp.src(source + 'img/**/')
+        .pipe(imagemin())
         .pipe(gulp.dest(develop + 'img'));
 });
 
@@ -112,9 +158,13 @@ gulp.task('build-img',function(){
 //  SOUNDS TASK
 //**********************************************//
 
-gulp.task('build-sounds',function(){
-    return gulp.src(source + 'sounds/**/')
-        .pipe(gulp.dest(develop + 'sounds'));
+gulp.task('media:dist',function(){
+    return gulp.src(source + 'media/**/')
+        .pipe(gulp.dest(distribution + 'media'));
+});
+gulp.task('media:dev',function(){
+    return gulp.src(source + 'media/**/')
+        .pipe(gulp.dest(develop + 'media'));
 });
 
 //**********************************************//
@@ -132,19 +182,27 @@ gulp.task('browser-sync', function () {
 });
 
 //**********************************************//
+//  UTILITY
+//**********************************************//
+
+
+
+//**********************************************//
 //  WATCH
 //**********************************************//
 
 gulp.task('watch', function () {
-    gulp.watch(source + 'app/**/*.ts',      ['scripts']);
-    gulp.watch(source + 'styles/**/*.styl', ['styles']);
-    gulp.watch(source + 'index.html',       ['build-html']);
-    gulp.watch(source + 'views/**/*.html',  ['build-html-views']);
+    gulp.watch(source + 'app/**/*.ts',      ['webpack:dev']);
+    gulp.watch(source + 'styles/**/*.styl', ['style:dev']);
+    gulp.watch(source + 'index.html',       ['index:dev']);
+    gulp.watch(source + 'views/**/*.html',  ['views:dev']);
+    gulp.watch(source + 'img/**/',          ['img:dev']);
+    gulp.watch(source + 'media/**/',        ['media:dev']);
+    gulp.watch(source + 'fonts/**/',        ['font:dev']);
 });
 
-//**********************************************//
-//  TASKS NAMES
-//**********************************************//
 
-gulp.task('init', ['build-html', 'build-html-views', 'build-fonts', 'build-img', 'build-sounds', 'scripts-node', 'scripts', 'scripts-config', 'styles']);
-gulp.task('default', [ 'watch', 'browser-sync']);
+gulp.task('dev',    gulpSequence([ 'style:dev', 'webpack:dev', 'index:dev', 'views:dev', 'font:dev', 'img:dev', 'favicon:dev', 'media:dev'],'init'));
+gulp.task('dist',   [ 'style:dist', 'webpack:dist', 'index:dist', 'views:dist', 'font:dist', 'img:dist', 'favicon:dist', 'media:dist']);
+gulp.task('init',   [ 'watch', 'browser-sync'] );
+
