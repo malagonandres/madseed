@@ -1,9 +1,9 @@
 {
   "name": "madseed",
   "version": "0.0.1",
-  "description" : "boilerplate for ANGULAR2",
-  "email" : "ideas@madnessgoods.com",
-  "url" : "https://github.com/madgoods/madseed",
+  "description": "boilerplate for ANGULAR2",
+  "email": "ideas@madnessgoods.com",
+  "url": "https://github.com/madgoods/madseed",
   "repository": "https://github.com/madgoods/madseed",
   "license": "MIT",
   "scripts": {
