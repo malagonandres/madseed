@@ -1,9 +1,11 @@
 #IGNORE NODE MODULES
-/node_modules
-/src/node_modules
+node_modules/
+
 #IGNORE TYPINGS
-src/typings
+typings/
 #IGNORE DEVELOPER FOLDER
-/dev
+dev/
+#IGNORE DISTRIBUTION FOLDER
+dist/
 #IGNORE IDEA FOLDER
-/.idea
+.idea/
