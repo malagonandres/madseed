@@ -1,8 +1,14 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
     selector: 'my-app',
-    template: '<h1>My App :D</h1>'
+    template: '<h1>{{text}}</h1>'
 })
 
-export class AppComponent{}
+export class AppComponent implements OnInit{
+    text:string = 'BECOME MADNESS';
+
+    ngOnInit(){
+        console.log(this.text);
+    }
+}

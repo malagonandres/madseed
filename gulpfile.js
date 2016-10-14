@@ -83,7 +83,8 @@ gulp.task('webpack:dev', function() {
         .pipe(webpack({
             output  : { filename : 'app.bundle.js' },
             module  : { loaders: [{test: /\.ts$/, loader: 'ts'}] },
-            resolve : { extensions : ['','.js','.ts'] }
+            resolve : { extensions : ['','.js','.ts'] },
+            devtool : 'eval'
         }))
         .pipe(gulp.dest( develop + 'js'))
         .pipe(browserSync.stream());
