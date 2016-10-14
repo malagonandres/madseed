@@ -2,7 +2,7 @@
 
 Easy boilerplate to config front-end web with ANGULAR 2 FINAL RELEASE. 
 
-We also use gulp, ts, postcss, stylus, and more
+We also use gulp, ts, postcss, stylus, , webpack and more
 
 ## INSTALL
 
