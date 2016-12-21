@@ -11,11 +11,12 @@ var rupture             = require('rupture');                       //https://gi
 var browserSync         = require('browser-sync').create();         //https://www.browsersync.io
 var sourceMaps          = require('gulp-sourcemaps');
 var fallback            = require('connect-history-api-fallback');  //https://github.com/bripkens/connect-history-api-fallback
-var webpack             = require('webpack-stream');
-var replace             = require('gulp-replace');  //https://www.npmjs.com/package/gulp-replace
+var webpack             = require('webpack-stream');                //https://github.com/shama/webpack-stream
+var replace             = require('gulp-replace');                  //https://www.npmjs.com/package/gulp-replace
 var imagemin            = require('gulp-imagemin');
 var htmlmin             = require('gulp-htmlmin');
 var gulpSequence        = require('gulp-sequence');
+
 //**********************************************//
 //  INIT VARIABLE
 //**********************************************//
@@ -80,15 +81,23 @@ gulp.task('webpack:dist', function() {
 gulp.task('webpack:dev', function() {
     return gulp.src(source + 'app/main.ts')
         .pipe(plumber())
-        .pipe(webpack({
-            output  : { filename : 'app.bundle.js' },
-            module  : { loaders: [{test: /\.ts$/, loader: 'ts'}] },
-            resolve : { extensions : ['','.js','.ts'] },
-            devtool : 'eval'
-        }))
+        .pipe(webpack( require('./webpack.dev.config.js')))
         .pipe(gulp.dest( develop + 'js'))
         .pipe(browserSync.stream());
 });
+
+// gulp.task('webpack:dev', function() {
+//     return gulp.src(source + 'app/main.ts')
+//         .pipe(plumber())
+//         .pipe(webpack({
+//             output  : { filename : 'app.bundle.js' },
+//             module  : { loaders: [{test: /\.ts$/, loader: 'ts'}] },
+//             resolve : { extensions : ['','.js','.ts'] },
+//             devtool : 'eval'
+//         }))
+//         .pipe(gulp.dest( develop + 'js'))
+//         .pipe(browserSync.stream());
+// });
 
 //**********************************************//
 //  HTML TASK
