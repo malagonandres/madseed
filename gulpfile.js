@@ -9,7 +9,6 @@ var lost                = require('lost');                          //https://gi
 var nib                 = require('nib');                           //http://tj.github.io/nib/
 var rupture             = require('rupture');                       //https://github.com/jenius/rupture
 var browserSync         = require('browser-sync').create();         //https://www.browsersync.io
-var sourceMaps          = require('gulp-sourcemaps');
 var fallback            = require('connect-history-api-fallback');  //https://github.com/bripkens/connect-history-api-fallback
 var webpack             = require('webpack-stream');                //https://github.com/shama/webpack-stream
 var replace             = require('gulp-replace');                  //https://www.npmjs.com/package/gulp-replace
@@ -74,7 +73,7 @@ gulp.task('style:dev', function () {
 gulp.task('webpack:dist', function() {
     return gulp.src(source + 'app/main.ts')
         .pipe(plumber())
-        .pipe(webpack( require('./webpack.config.js') ))
+        .pipe(webpack( require('./webpack.dist.config.js') ))
         .pipe(gulp.dest( distribution + 'js' ));
 });
 
@@ -86,18 +85,6 @@ gulp.task('webpack:dev', function() {
         .pipe(browserSync.stream());
 });
 
-// gulp.task('webpack:dev', function() {
-//     return gulp.src(source + 'app/main.ts')
-//         .pipe(plumber())
-//         .pipe(webpack({
-//             output  : { filename : 'app.bundle.js' },
-//             module  : { loaders: [{test: /\.ts$/, loader: 'ts'}] },
-//             resolve : { extensions : ['','.js','.ts'] },
-//             devtool : 'eval'
-//         }))
-//         .pipe(gulp.dest( develop + 'js'))
-//         .pipe(browserSync.stream());
-// });
 
 //**********************************************//
 //  HTML TASK
@@ -122,6 +109,7 @@ gulp.task('views:dist', function () {
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest(distribution + 'views'));
 });
+
 gulp.task('views:dev', function () {
     return gulp.src(source + 'views/**/*.html')
         .pipe(gulp.dest(develop + 'views'));
@@ -139,7 +127,6 @@ gulp.task('font:dev',function(){
     return gulp.src(source + 'fonts/**/')
         .pipe(gulp.dest(develop + 'fonts'));
 });
-
 gulp.task('favicon:dist',function(){
     return gulp.src(source + 'favicon.ico')
         .pipe(gulp.dest(distribution));

@@ -10,15 +10,14 @@
     "postinstall": "typings install"
   },
   "dependencies": {
-    "@angular/common": "~2.1.0",
-    "@angular/compiler": "~2.1.0",
-    "@angular/core": "~2.1.0",
-    "@angular/platform-browser": "~2.1.0",
-    "@angular/platform-browser-dynamic": "~2.1.0",
+    "@angular/common": "~2.3.0",
+    "@angular/compiler": "~2.3.0",
+    "@angular/core": "~2.3.0",
+    "@angular/platform-browser": "~2.3.0",
+    "@angular/platform-browser-dynamic": "~2.3.0",
     "core-js": "^2.4.1",
-    "reflect-metadata": "^0.1.8",
-    "rxjs": "5.0.0-beta.12",
-    "zone.js": "^0.6.25"
+    "rxjs": "5.0.0-rc.4",
+    "zone.js": "^0.7.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.0",
@@ -32,11 +31,9 @@
     "gulp-postcss": "^6.2.0",
     "gulp-replace": "^0.5.4",
     "gulp-sequence": "^0.4.6",
-    "gulp-sourcemaps": "^2.1.1",
     "gulp-stylus": "^2.5.0",
     "gulp-typescript": "^3.0.2",
     "gulp-uglify": "^2.0.0",
-    "html-webpack-plugin": "^2.22.0",
     "lost": "^7.1.0",
     "nib": "^1.1.2",
     "rupture": "^0.6.1",
