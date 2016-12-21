@@ -6,5 +6,6 @@ typings/
 dev/
 #IGNORE DISTRIBUTION FOLDER
 dist/
-#IGNORE IDEA FOLDER
+#IGNORE UTILITIES
 .idea/
+.vscode/
