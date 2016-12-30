@@ -50,7 +50,6 @@ gulp.task('style:dist', function () {
 gulp.task('style:dev', function () {
     return gulp.src(source + 'styles/style.styl')
         .pipe(plumber())
-        .pipe(sourceMaps.init())
         .pipe(stylus({
             use : [
                 nib(),
@@ -61,7 +60,6 @@ gulp.task('style:dev', function () {
             lost,
             autoprefixer
         ]))
-        .pipe(sourceMaps.write('.', { sourceRoot: develop + 'css' }))
         .pipe(gulp.dest(develop + 'css'))
         .pipe(browserSync.stream());
 });
@@ -73,14 +71,14 @@ gulp.task('style:dev', function () {
 gulp.task('webpack:dist', function() {
     return gulp.src(source + 'app/main.ts')
         .pipe(plumber())
-        .pipe(webpack( require('./webpack.dist.config.js') ))
+        .pipe(webpack( require('./webpack.dist.js') ))
         .pipe(gulp.dest( distribution + 'js' ));
 });
 
 gulp.task('webpack:dev', function() {
     return gulp.src(source + 'app/main.ts')
         .pipe(plumber())
-        .pipe(webpack( require('./webpack.dev.config.js')))
+        .pipe(webpack( require('./webpack.config.js')))
         .pipe(gulp.dest( develop + 'js'))
         .pipe(browserSync.stream());
 });
@@ -92,14 +90,14 @@ gulp.task('webpack:dev', function() {
 
 gulp.task('index:dist', function(){
     gulp.src([source + 'index.html'])
-        .pipe(replace('<script></script>','<script type="text/javascript" src="js/app.bundle.min.js"></script>'))
+        .pipe(replace('<script></script>','<script type="text/javascript" src="js/polyfills.js"></script> <script type="text/javascript" src="js/vendor.js"></script> <script type="text/javascript" src="js/app.js"></script>'))
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest( distribution ));
 });
 
 gulp.task('index:dev', function(){
     gulp.src([source + 'index.html'])
-        .pipe(replace('<script></script>','<script type="text/javascript" src="js/app.bundle.js"></script>'))
+        .pipe(replace('<script></script>','<script type="text/javascript" src="js/polyfills.js"></script> <script type="text/javascript" src="js/vendor.js"></script> <script type="text/javascript" src="js/app.js"></script>' ))
         .pipe(gulp.dest( develop ))
         .pipe(browserSync.stream());
 });
@@ -183,7 +181,6 @@ gulp.task('browser-sync', function () {
 //**********************************************//
 
 
-
 //**********************************************//
 //  WATCH
 //**********************************************//
@@ -199,6 +196,7 @@ gulp.task('watch', function () {
 });
 
 
+gulp.task('test',    [ 'style:dev', 'webpack:dev', 'index:dev', 'views:dev', 'font:dev', 'img:dev', 'favicon:dev', 'media:dev']);
 gulp.task('dev',    gulpSequence([ 'style:dev', 'webpack:dev', 'index:dev', 'views:dev', 'font:dev', 'img:dev', 'favicon:dev', 'media:dev'],'init'));
 gulp.task('dist',   [ 'style:dist', 'webpack:dist', 'index:dist', 'views:dist', 'font:dist', 'img:dist', 'favicon:dist', 'media:dist']);
 gulp.task('init',   [ 'watch', 'browser-sync'] );
