@@ -2,6 +2,11 @@
   "compilerOptions": {
     "target": "es5",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "noImplicitAny": true,
+    "removeComments": true
+  },
+  "awesomeTypescriptLoaderOptions": {
+    /* ... */
   }
 }

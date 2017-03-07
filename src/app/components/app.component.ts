@@ -6,7 +6,7 @@ import {Component, OnInit} from '@angular/core';
 })
 
 export class AppComponent implements OnInit{
-    text:string = 'BECOME MADNESS power';
+    text:string = 'BECOME MADNESS';
 
     ngOnInit(){
         console.log(this.text);

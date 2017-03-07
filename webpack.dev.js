@@ -11,17 +11,15 @@ module.exports = {
     },
     module: {
         loaders: [
-            {test: /\.ts$/, loader: 'ts'}
+            {
+                test: /\.tsx?$/,
+                loader: 'awesome-typescript-loader'
+            }
         ]
     },
     resolve : {
-        extensions : ['','.js','.ts']
+        extensions: ['.ts', '.tsx', '.js', '.jsx','']
     },
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: ['app', 'vendor', 'polyfills'],
-             minChunks: Infinity
-        })
-    ],
-    devtool: 'source-map'
+    devtool: 'source-map',
+    debug: false
 };

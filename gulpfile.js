@@ -14,7 +14,7 @@ var webpack             = require('webpack-stream');                //https://gi
 var replace             = require('gulp-replace');                  //https://www.npmjs.com/package/gulp-replace
 var imagemin            = require('gulp-imagemin');
 var htmlmin             = require('gulp-htmlmin');
-var gulpSequence        = require('gulp-sequence');
+
 
 //**********************************************//
 //  INIT VARIABLE
@@ -69,20 +69,19 @@ gulp.task('style:dev', function () {
 //**********************************************//
 
 gulp.task('webpack:dist', function() {
-    return gulp.src(source + 'app/main.ts')
+    return gulp.src(source + 'app/*.ts')
         .pipe(plumber())
         .pipe(webpack( require('./webpack.dist.js') ))
         .pipe(gulp.dest( distribution + 'js' ));
 });
 
 gulp.task('webpack:dev', function() {
-    return gulp.src(source + 'app/main.ts')
+    return gulp.src(source + 'app/*.ts')
         .pipe(plumber())
         .pipe(webpack( require('./webpack.config.js')))
         .pipe(gulp.dest( develop + 'js'))
-        .pipe(browserSync.stream());
+        .pipe(browserSync.stream({once: true}));
 });
-
 
 //**********************************************//
 //  HTML TASK
@@ -174,30 +173,20 @@ gulp.task('browser-sync', function () {
         },
         open:true
     });
-});
 
-//**********************************************//
-//  UTILITY
-//**********************************************//
+    browserSync.notify("Compiling, please wait madness!");
 
-
-//**********************************************//
-//  WATCH
-//**********************************************//
-
-gulp.task('watch', function () {
     gulp.watch(source + 'app/**/*.ts',      ['webpack:dev']);
     gulp.watch(source + 'styles/**/*.styl', ['style:dev']);
     gulp.watch(source + 'index.html',       ['index:dev']);
-    gulp.watch(source + 'views/**/*.html',  ['views:dev']);
-    gulp.watch(source + 'img/**/',          ['img:dev']);
-    gulp.watch(source + 'media/**/',        ['media:dev']);
-    gulp.watch(source + 'fonts/**/',        ['font:dev']);
+    gulp.watch(source + 'views/**/*.html',  ['views:dev']).on('change', browserSync.reload);
+    gulp.watch(source + 'img/**/',          ['img:dev']).on('change', browserSync.reload);
+    gulp.watch(source + 'media/**/',        ['media:dev']).on('change', browserSync.reload);
+    gulp.watch(source + 'fonts/**/',        ['font:dev']).on('change', browserSync.reload);
 });
 
 
-gulp.task('test',    [ 'style:dev', 'webpack:dev', 'index:dev', 'views:dev', 'font:dev', 'img:dev', 'favicon:dev', 'media:dev']);
-gulp.task('dev',    gulpSequence([ 'style:dev', 'webpack:dev', 'index:dev', 'views:dev', 'font:dev', 'img:dev', 'favicon:dev', 'media:dev'],'init'));
+gulp.task('dev',    [ 'style:dev', 'webpack:dev', 'index:dev', 'views:dev', 'font:dev', 'img:dev', 'favicon:dev', 'media:dev','server']);
 gulp.task('dist',   [ 'style:dist', 'webpack:dist', 'index:dist', 'views:dist', 'font:dist', 'img:dist', 'favicon:dist', 'media:dist']);
-gulp.task('init',   [ 'watch', 'browser-sync'] );
+gulp.task('server',   [ 'browser-sync'] );
 
