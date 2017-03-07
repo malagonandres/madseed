@@ -174,8 +174,6 @@ gulp.task('browser-sync', function () {
         open:true
     });
 
-    browserSync.notify("Compiling, please wait madness!");
-
     gulp.watch(source + 'app/**/*.ts',      ['webpack:dev']);
     gulp.watch(source + 'styles/**/*.styl', ['style:dev']);
     gulp.watch(source + 'index.html',       ['index:dev']);
